@@ -7,17 +7,12 @@ __pycache__/
 # Django
 *.log
 db.sqlite3
-
+media/
 
 # Virtual Environment
 venv/
 env/
 ENV/
-
-
-
-
-
 
 # Environment variables
 .env
