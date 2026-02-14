@@ -1,0 +1,45 @@
+{% extends "Base.html" %}
+{% block title %}My Listings{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <h2 class="fw-bold mb-4">🚗 My Listings</h2>
+
+    {% if uploaded_cars %}
+        <div class="row g-4">
+            {% for car in uploaded_cars %}
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+
+                    {% if car.image %}
+                        <img src="{{ car.image.url }}"
+                             class="card-img-top"
+                             style="height:200px; object-fit:cover;">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5>{{ car.title }}</h5>
+                        <p>Starting Price: ₹{{ car.starting_price }}</p>
+                        <p>Status:
+                            <span class="badge bg-info">
+                                {{ car.status }}
+                            </span>
+                        </p>
+
+                        <a href="{% url 'car_detail' car.id %}"
+                           class="btn btn-dark w-100">
+                            View Details
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You haven't listed any cars yet.</p>
+    {% endif %}
+
+</div>
+{% endblock %}

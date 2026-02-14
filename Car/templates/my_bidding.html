@@ -1,0 +1,89 @@
+{% extends "Base.html" %}
+{% block title %}My Bidding{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <h2 class="fw-bold mb-4">🏷 My Bidding</h2>
+
+    <!-- ================= BIDS ================= -->
+    <div class="card shadow-sm mb-5">
+        <div class="card-header bg-dark text-white">
+            Cars I Bid On
+        </div>
+
+        <div class="card-body">
+            {% if bid_cars %}
+                <div class="row g-4">
+                    {% for car in bid_cars %}
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+
+                            {% if car.image %}
+                                <img src="{{ car.image.url }}"
+                                     class="card-img-top"
+                                     style="height:200px; object-fit:cover;">
+                            {% endif %}
+
+                            <div class="card-body">
+                                <h5>{{ car.title }}</h5>
+                                <p>Base Price: ₹{{ car.base_price }}</p>
+
+                                <a href="{% url 'car_detail' car.id %}"
+                                   class="btn btn-outline-dark w-100">
+                                    View Auction
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>You haven’t placed any bids yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <!-- ================= WON ================= -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            🏆 Auctions Won
+        </div>
+
+        <div class="card-body">
+            {% if won_cars %}
+                <div class="row g-4">
+                    {% for car in won_cars %}
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+
+                            {% if car.image %}
+                                <img src="{{ car.image.url }}"
+                                     class="card-img-top"
+                                     style="height:200px; object-fit:cover;">
+                            {% endif %}
+
+                            <div class="card-body">
+                                <h5>{{ car.title }}</h5>
+                                <p class="text-success fw-bold">
+                                    You Won This Auction 🎉
+                                </p>
+
+                                <a href="{% url 'car_detail' car.id %}"
+                                   class="btn btn-success w-100">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>You haven't won any auctions yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

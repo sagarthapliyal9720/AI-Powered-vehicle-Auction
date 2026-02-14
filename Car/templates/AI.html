@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Vehicle Price Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #5a67d8;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>🚗 AI Vehicle Price Predictor</h2>
+
+    <form method="POST" id="priceForm">
+        {% csrf_token %}
+
+        <input type="text" name="brand" placeholder="Brand" required>
+        <input type="text" name="model" placeholder="Model" required>
+        <input type="number" name="year" placeholder="Year" required>
+        <input type="number" name="km_driven" placeholder="KM Driven" required>
+        <input type="text" name="fuel" placeholder="Fuel Type" required>
+        <input type="text" name="condition" placeholder="Condition" required>
+
+        <select name="vehicle_type">
+            <option value="2-wheeler">2 Wheeler</option>
+            <option value="4-wheeler">4 Wheeler</option>
+        </select>
+
+        <button type="submit" id="submitBtn">
+            Get AI Suggested Price
+        </button>
+    </form>
+
+    <!-- Loading -->
+    <div class="loading" id="loadingDiv">
+        <div class="spinner"></div>
+        <p>AI is analyzing vehicle data...</p>
+    </div>
+
+    <!-- Result -->
+    {% if price %}
+        <div class="result">
+            Estimated Price: ₹{{ price }}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    const form = document.getElementById("priceForm");
+    const loading = document.getElementById("loadingDiv");
+    const button = document.getElementById("submitBtn");
+
+    form.addEventListener("submit", function() {
+        loading.style.display = "block";
+        button.disabled = true;
+        button.innerText = "Processing...";
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,357 @@
+{% extends "Base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<!-- HERO SECTION -->
+<section class="hero-section text-white text-center">
+    <div class="container py-5">
+        <h1 class="display-3 fw-bold mb-3">
+            Find Your Dream Car at Auction
+        </h1>
+
+        <p class="lead mb-4">
+            Discover premium vehicles, place competitive bids, and win your next ride.
+        </p>
+
+        <div class="d-flex justify-content-center flex-wrap gap-3">
+            <a href="{% url 'car_list' %}" class="btn btn-lg btn-warning fw-bold px-4">
+                🚗 Browse Auctions
+            </a>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'addcar' %}" class="btn btn-lg btn-outline-light px-4">
+                    Sell Your Vehicle
+                </a>
+
+                <a href="{% url 'Find_price' %}" class="btn btn-lg btn-outline-info px-4">
+                    🤖 AI Price Prediction
+                </a>
+            {% else %}
+                <a href="{% url 'register' %}" class="btn btn-lg btn-outline-light px-4">
+                    Get Started
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+<!-- ================= ACTIVE AUCTIONS ================= -->
+<section class="py-5 section-dark">
+    <div class="container">
+        <h2 class="text-center mb-5 section-title">
+            🔥 Active Auctions
+        </h2>
+
+        <div class="row g-4">
+            {% for car in active_cars|slice:":6" %}
+            <div class="col-md-4 col-lg-3">
+                <div class="card auction-card h-100">
+
+                    <div class="position-relative">
+                        <img src="{{ car.image.url }}"
+                             class="card-img-top auction-img">
+
+                        <span class="badge bg-success position-absolute top-0 end-0 m-2 px-3 py-2">
+                            Active
+                        </span>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="fw-bold">{{ car.title }}</h5>
+
+                        <p class="text-muted small mb-1">
+                            Base Price
+                        </p>
+
+                        <h6 class="price-text mb-3">
+                            ₹{{ car.base_price }}
+                        </h6>
+
+                        <p class="text-danger small">
+                            ⏳ Ends: {{ car.auction_end|date:"M d, Y H:i" }}
+                        </p>
+
+                        <a href="{% url 'car_detail' car.id %}"
+                           class="btn btn-gold mt-auto w-100">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+                <p class="text-center text-light">No active auctions.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+<!-- ================= UPCOMING AUCTIONS ================= -->
+<section class="py-5 section-light">
+    <div class="container">
+        <h2 class="text-center mb-5 section-title-dark">
+            ⏳ Upcoming Auctions
+        </h2>
+
+        <div class="row g-4">
+            {% for car in upcoming_cars|slice:":6" %}
+            <div class="col-md-4 col-lg-3">
+                <div class="card auction-card h-100">
+
+                    <div class="position-relative">
+                        <img src="{{ car.image.url }}"
+                             class="card-img-top auction-img">
+
+                        <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2 px-3 py-2">
+                            Upcoming
+                        </span>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="fw-bold">{{ car.title }}</h5>
+
+                        <p class="small text-muted">
+                            Starts On:
+                        </p>
+
+                        <p class="fw-semibold">
+                            {{ car.auction_start|date:"M d, Y H:i" }}
+                        </p>
+
+                        <a href="{% url 'car_detail' car.id %}"
+                           class="btn btn-outline-dark mt-auto w-100">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+                <p class="text-center">No upcoming auctions.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+<!-- ================= COMPLETED AUCTIONS ================= -->
+<section class="py-5 section-dark">
+    <div class="container">
+        <h2 class="text-center mb-5 section-title">
+            🏁 Completed Auctions
+        </h2>
+
+        <div class="row g-4">
+            {% for car in completed_cars|slice:":6" %}
+            <div class="col-md-4 col-lg-3">
+                <div class="card auction-card h-100 completed-card">
+
+                    <div class="position-relative">
+                        <img src="{{ car.image.url }}"
+                             class="card-img-top auction-img grayscale">
+
+                        <span class="badge bg-danger position-absolute top-0 end-0 m-2 px-3 py-2">
+                            Sold
+                        </span>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="fw-bold">{{ car.title }}</h5>
+
+                        <p class="small text-muted">Sold Price</p>
+
+                        <h6 class="price-text mb-3">
+                            ₹{{ car.base_price }}
+                        </h6>
+
+                        {% if car.winner %}
+                            <p class="text-success small">
+                                Winner: {{ car.winner.username }}
+                            </p>
+                        {% endif %}
+
+                        <a href="{% url 'car_detail' car.id %}"
+                           class="btn btn-outline-light mt-auto w-100">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+                <p class="text-center text-light">No completed auctions.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<!-- Hover Effect -->
+<style>
+
+
+/* ===== SECTIONS ===== */
+.section-dark {
+    background: #0f172a;
+    color: white;
+}
+
+.section-light {
+    background: #f8f9fa;
+}
+
+.section-title {
+    font-weight: 700;
+    color: #facc15;
+}
+
+.section-title-dark {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+/* ===== CARDS ===== */
+.auction-card {
+    border-radius: 18px;
+    overflow: hidden;
+    transition: all 0.35s ease;
+    border: none;
+}
+
+.auction-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+/* ===== IMAGE ===== */
+.auction-img {
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.auction-card:hover .auction-img {
+    transform: scale(1.08);
+}
+
+.grayscale {
+    filter: grayscale(80%);
+}
+
+/* ===== PRICE ===== */
+.price-text {
+    color: #facc15;
+    font-weight: 700;
+}
+
+/* ===== GOLD BUTTON ===== */
+.btn-gold {
+    background: #facc15;
+    color: #000;
+    font-weight: 600;
+    border-radius: 30px;
+}
+
+.btn-gold:hover {
+    background: #eab308;
+    color: black;
+    transform: scale(1.05);
+}
+
+/* ===== RESPONSIVE SPACING ===== */
+@media (max-width: 768px) {
+    .auction-img {
+        height: 180px;
+    }
+}
+
+
+
+.auction-card {
+    transition: all 0.3s ease;
+}
+.auction-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+
+/* ===== HERO SECTION ===== */
+.hero-section {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    padding: 100px 0;
+}
+
+/* ===== SECTION TITLES ===== */
+section h2 {
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* ===== CARDS ===== */
+.card {
+    border-radius: 18px;
+    overflow: hidden;
+    transition: all 0.35s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 45px rgba(0,0,0,0.2);
+}
+
+/* ===== IMAGE STYLE ===== */
+.card img {
+    transition: transform 0.4s ease;
+}
+
+.card:hover img {
+    transform: scale(1.05);
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+/* ===== BADGES ===== */
+.badge {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    border-radius: 20px;
+}
+
+/* ===== SECTION BACKGROUNDS ===== */
+.bg-light {
+    background: #f8f9fa !important;
+}
+
+/* ===== SMOOTH FADE IN ===== */
+.card {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+</style>
+
+{% endblock %}

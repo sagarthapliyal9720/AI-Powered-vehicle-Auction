@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Car Auction{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom shadow-sm sticky-top">
+    <div class="container">
+
+        <!-- Logo -->
+        <a class="navbar-brand fw-bold fs-4" href="{% url 'home' %}">
+            🚗 <span class="brand-text">CarAuction</span>
+        </a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <!-- Left Side -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link nav-hover {% if request.path == '/' %}active-link{% endif %}"
+                       href="{% url 'home' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link nav-hover {% if 'car' in request.path %}active-link{% endif %}"
+                       href="{% url 'car_list' %}">
+                        Auctions
+                    </a>
+                </li>
+
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link nav-hover"
+                       href="{% url 'addcar' %}">
+                        Sell Vehicle
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+
+            <!-- Right Side -->
+            <ul class="navbar-nav align-items-lg-center">
+
+                {% if user.is_authenticated %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center"
+                           href="#"
+                           role="button"
+                           data-bs-toggle="dropdown">
+                            👤 {{ user.username }}
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 custom-dropdown">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'my_bidding' %}">
+                                    My Bids
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'my_listings' %}">
+                                    My Listings
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger"
+                                   href="{% url 'logout' %}">
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                {% else %}
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-hover"
+                           href="{% url 'login_view' %}">
+                            Login
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-warning fw-semibold px-3 rounded-pill"
+                           href="{% url 'register' %}">
+                            Register
+                        </a>
+                    </li>
+
+                {% endif %}
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+
+<!-- Extra Styling -->
+<style>
+
+/* ===== NAVBAR BACKGROUND ===== */
+.navbar-custom {
+    background: #111827; /* soft dark navy */
+    padding: 12px 0;
+}
+
+/* ===== BRAND ===== */
+.brand-text {
+    color: #facc15; /* gold accent */
+}
+
+/* ===== NAV LINKS ===== */
+.nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: #facc15 !important;
+}
+
+/* Underline animation */
+.nav-hover::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 4px;
+    width: 0%;
+    height: 2px;
+    background-color: #facc15;
+    transition: width 0.3s ease;
+}
+
+.nav-hover:hover::after {
+    width: 100%;
+}
+
+.active-link {
+    color: #facc15 !important;
+    font-weight: 600;
+}
+
+/* ===== DROPDOWN ===== */
+.custom-dropdown {
+    border-radius: 12px;
+    padding: 8px;
+}
+
+.dropdown-item {
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background: #f3f4f6;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background: #111827;
+    font-size: 0.9rem;
+}
+
+/* ===== ALERTS ===== */
+.alert {
+    border-radius: 10px;
+}
+
+</style>
+
+
+
+<!-- MESSAGES -->
+<div class="container mt-3">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+</div>
+
+
+<!-- MAIN CONTENT -->
+{% block content %}
+{% endblock %}
+
+
+<!-- FOOTER -->
+<footer class="bg-dark text-white text-center py-3 mt-5">
+    <div class="container">
+        <small>
+            © 2026 CarAuction | Built with Django & Bootstrap
+        </small>
+    </div>
+</footer>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

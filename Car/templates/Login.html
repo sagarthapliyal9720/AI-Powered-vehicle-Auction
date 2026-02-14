@@ -1,0 +1,60 @@
+{% extends "Base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center"
+     style="min-height: 80vh;">
+
+    <div class="card shadow-lg border-0 p-4" style="width: 400px; border-radius: 15px;">
+
+        <div class="text-center mb-4">
+            <h3 class="fw-bold">Welcome Back</h3>
+            <p class="text-muted">Login to continue bidding</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Username -->
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text"
+                       class="form-control form-control-lg"
+                       name="username"
+                       placeholder="Enter username"
+                       required>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password"
+                       class="form-control form-control-lg"
+                       name="password"
+                       placeholder="Enter password"
+                       required>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-dark btn-lg">
+                    Login
+                </button>
+            </div>
+        </form>
+
+        <!-- Register Link -->
+        <div class="text-center mt-3">
+            <small>
+                Don't have an account?
+                <a href="{% url 'register' %}" class="text-decoration-none fw-semibold">
+                    Register
+                </a>
+            </small>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

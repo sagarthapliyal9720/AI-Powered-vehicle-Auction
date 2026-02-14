@@ -1,0 +1,159 @@
+{% extends "Base.html" %}
+{% block title %}Add Vehicle{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="card shadow-lg border-0 p-4 mx-auto"
+         style="max-width: 900px; border-radius: 15px;">
+
+        <div class="text-center mb-4">
+            <h2 class="fw-bold" id="formTitle">🚗 Add New Vehicle</h2>
+            <p class="text-muted">List your vehicle for auction</p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Vehicle Type -->
+            <div class="mb-4">
+                <label class="form-label fw-bold">Vehicle Type</label>
+                <select name="vehicle_type"
+                        id="vehicleType"
+                        class="form-select form-select-lg"
+                        required>
+                    <option value="4_wheeler">4 Wheeler</option>
+                    <option value="2_wheeler">2 Wheeler</option>
+                </select>
+            </div>
+
+            <div class="row">
+
+                <!-- Title -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Vehicle Title</label>
+                    <input type="text"
+                           name="title"
+                           id="titleInput"
+                           class="form-control form-control-lg"
+                           placeholder="e.g. BMW M4 2022"
+                           required>
+                </div>
+
+                <!-- Brand -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Brand</label>
+                    <input type="text"
+                           name="brand"
+                           id="brandInput"
+                           class="form-control form-control-lg"
+                           placeholder="e.g. BMW"
+                           required>
+                </div>
+
+                <!-- Model -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Model Name</label>
+                    <input type="text"
+                           name="model_name"
+                           class="form-control form-control-lg"
+                           placeholder="e.g. M4 Competition"
+                           required>
+                </div>
+
+                <!-- Year -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Year</label>
+                    <input type="number"
+                           name="year"
+                           class="form-control form-control-lg"
+                           min="1900"
+                           max="2099"
+                           required>
+                </div>
+
+                <!-- Base Price -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Base Price (₹)</label>
+                    <input type="number"
+                           name="base_price"
+                           class="form-control form-control-lg"
+                           placeholder="Enter starting price"
+                           required>
+                </div>
+
+                <!-- Auction Start -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Auction Start</label>
+                    <input type="datetime-local"
+                           name="auction_start"
+                           class="form-control form-control-lg"
+                           required>
+                </div>
+
+                <!-- Auction End -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Auction End</label>
+                    <input type="datetime-local"
+                           name="auction_end"
+                           class="form-control form-control-lg"
+                           required>
+                </div>
+
+                <!-- Image -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Vehicle Image</label>
+                    <input type="file"
+                           name="image"
+                           class="form-control form-control-lg"
+                           accept="image/*"
+                           required>
+                </div>
+
+                <!-- Description -->
+                <div class="col-12 mb-4">
+                    <label class="form-label">Description</label>
+                    <textarea name="description"
+                              rows="4"
+                              class="form-control form-control-lg"
+                              placeholder="Describe condition, mileage, features..."
+                              required></textarea>
+                </div>
+
+            </div>
+
+            <div class="d-grid mt-3">
+                <button type="submit"
+                        class="btn btn-dark btn-lg">
+                    Add Vehicle to Auction
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Dynamic Placeholder Script -->
+<script>
+    const vehicleType = document.getElementById("vehicleType");
+    const formTitle = document.getElementById("formTitle");
+    const titleInput = document.getElementById("titleInput");
+    const brandInput = document.getElementById("brandInput");
+
+    vehicleType.addEventListener("change", function() {
+        if (this.value === "2_wheeler") {
+            formTitle.innerText = "🏍️ Add New Bike";
+            titleInput.placeholder = "e.g. Royal Enfield Classic 350";
+            brandInput.placeholder = "e.g. Yamaha";
+        } else {
+            formTitle.innerText = "🚗 Add New Car";
+            titleInput.placeholder = "e.g. BMW M4 2022";
+            brandInput.placeholder = "e.g. BMW";
+        }
+    });
+</script>
+
+{% endblock %}
