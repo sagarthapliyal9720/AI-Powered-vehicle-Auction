@@ -9,7 +9,20 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.mail import send_mail
+from .utils import send_brevo_email
+
 from django.conf import settings
+from django.shortcuts import render
+from django.utils import timezone
+from django.db.models import Q
+from .models import Car
+
+from django.utils import timezone
+
+from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
+from .models import Car
+from .utils import send_brevo_email
 
 # Create your views here.
 
@@ -156,10 +169,6 @@ def logout_view(request):
     logout(request)
     return redirect("login_view")
 
-from django.shortcuts import render
-from django.utils import timezone
-from django.db.models import Q
-from .models import Car
 
 
 def Car_list(request):
@@ -209,8 +218,6 @@ def Car_list(request):
 
     return render(request, "car_list.html", context)
 
-from django.utils import timezone
-
 def car_detail(request, id):
     car = get_object_or_404(Car, id=id)
     now = timezone.now()
@@ -223,9 +230,8 @@ def car_detail(request, id):
             car.winner = highest_bid.bidder
 
         car.status = "Completed"
-        car.save()   # ✅ Only ONE save
+        car.save()
 
-        # Send email only if winner exists
         if highest_bid and highest_bid.bidder.email:
 
             subject = "🎉 You Won the Auction!"
@@ -243,15 +249,12 @@ Please contact the seller to proceed further.
 Thank you for using Auction.IN 🚗
 """
 
-            send_mail(
+            send_brevo_email(
+                highest_bid.bidder.email,
                 subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [highest_bid.bidder.email],
-                fail_silently=False,
+                message
             )
 
-    # Page data
     all_bid = car.bids.order_by('-created_at')
     highest_bid = car.bids.order_by('-amount').first()
     total_bids = car.bids.count()

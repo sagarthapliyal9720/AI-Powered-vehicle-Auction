@@ -1,0 +1,7 @@
+Django>=4.2,<5.1
+gunicorn
+whitenoise
+python-dotenv
+requests
+google-generativeai
+

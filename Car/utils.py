@@ -1,5 +1,6 @@
 import google.generativeai as genai
 from django.conf import settings
+import requests
 
 genai.configure(api_key=settings.GEMINI_API_KEY)
 
@@ -26,3 +27,30 @@ def predict_vehicle_price(vehicle_data):
     response = model.generate_content(prompt)
     
     return response.text
+
+
+
+def send_brevo_email(to_email, subject, message):
+    url = "https://api.brevo.com/v3/smtp/email"
+
+    headers = {
+        "accept": "application/json",
+        "api-key": settings.BREVO_API_KEY,
+        "content-type": "application/json"
+    }
+   
+    data = {
+        "sender": {
+            "name": "Auction.IN",
+            "email": settings.DEFAULT_FROM_EMAIL
+        },
+        "to": [{"email": to_email}],
+        "subject": subject,
+        "htmlContent": f"<html><body><pre>{message}</pre></body></html>"
+    }
+
+    response = requests.post(url, json=data, headers=headers)
+
+  
+
+    return response.status_code

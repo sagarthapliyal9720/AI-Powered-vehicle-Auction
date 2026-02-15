@@ -14,6 +14,9 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY")
+DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -138,6 +141,5 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER =os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD =os.getenv("EMAIL_HOST_PASSWORD")
-print(EMAIL_HOST_USER)
-print(EMAIL_HOST_PASSWORD)
+
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
