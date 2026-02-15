@@ -11,7 +11,6 @@ urlpatterns = [
     path('car/<int:id>/', views.car_detail, name="car_detail"),
     path('logout/',views.logout_view,name="logout"),
     path('car/<int:id>/bid/', views.bid_car, name="bid_car"),
-    path('send/',views.Mail,name="mail"),
     path('addcar/',views.add_car,name="addcar"),
     path('my-bidding/', views.my_bidding, name='my_bidding'),
     path('my-listings/', views.my_listings, name='my_listings'),

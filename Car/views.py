@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from .utils import send_brevo_email
 
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.shortcuts import render
 from django.utils import timezone
@@ -216,7 +217,7 @@ def Car_list(request):
         "cars": cars,
     }
 
-    return render(request, "car_list.html", context)
+    return render(request, "Car_list.html", context)
 
 def car_detail(request, id):
     car = get_object_or_404(Car, id=id)
@@ -294,17 +295,8 @@ def add_car(request):
 
     return render(request, "add_car.html")
 
-def Mail(request):
-     send_mail(
-                "hlw",
-                "message",
-                settings.DEFAULT_FROM_EMAIL,
-                ["sagarthapliyal9720@gmail.com"],
-                fail_silently=False,
-            )
-     return HttpResponse("mail send")
 
-from django.contrib.auth.decorators import login_required
+
 
 @login_required
 def my_bidding(request):
