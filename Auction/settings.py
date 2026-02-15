@@ -32,6 +32,7 @@ SECRET_KEY = 'django-insecure-b9rf2s3t04ix@y_5e&oyi)8z1r#*5$pcysfw566hq5)a-0p5h!
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "ai-powered-vehicle-auction-2.onrender.com",
     "ai-powered-vehicle-auction-1.onrender.com",
     "localhost",
     "127.0.0.1",
